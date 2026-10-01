@@ -40,3 +40,20 @@ class Post(Base):
     comments: Mapped[list["Comment"]] = relationship(
         back_populates="post"
     )
+
+class Comment(Base):
+    __tablename__ = "comments"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    content: Mapped[str]
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id")
+    )
+    post_id: Mapped[int] = mapped_column(
+        ForeignKey("posts.id")
+    )
+    author: Mapped["User"] = relationship(
+        back_populates="comments"
+    )
+    post: Mapped["Post"] = relationship(
+        back_populates="comments"
+    )
